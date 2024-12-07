@@ -126,7 +126,7 @@ with tab1:
 
 
 
-    # Ensure EMA200 and Close are Series, not DataFrames
+    # Ensure EMA200 and Close are Series
     if isinstance(data['EMA200'], pd.DataFrame):
         data['EMA200'] = data['EMA200'].iloc[:, 0]
     
@@ -136,14 +136,10 @@ with tab1:
     # Calculate Percent_Below_EMA
     data['Percent_Below_EMA'] = (data['EMA200'] - data['Close']) / data['Close']
     
-    # Similarly, fix other related calculations
-    if 'EMA200_Weekly' in data.columns and 'Close' in data.columns:
+    # Calculate Percent_Below_EMA_Weekly if required
+    if 'EMA200_Weekly' in data.columns:
         data['Percent_Below_EMA_Weekly'] = (data['EMA200_Weekly'] - data['Close']) / data['Close']
-    
 
-
-    # Initialize lists and counters for buy and strong buy signals and below EMA tracking
-    buy_signals = []
     strong_buy_signals = []
 
 
