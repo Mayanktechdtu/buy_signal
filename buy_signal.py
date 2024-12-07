@@ -126,11 +126,20 @@ with tab1:
 
 
 
-    # Calculate the percentage difference between the Close price and the EMA (Daily and Weekly)
-    data['Percent_Below_EMA'] = (data['EMA200'] - data['Close']) / data['EMA200'] * 100
-    data['Percent_Below_EMA_Weekly'] = (data['EMA200_Weekly'] - data['Close']) / data['EMA200_Weekly'] * 100
-
-
+    # Ensure EMA200 and Close are Series, not DataFrames
+    if isinstance(data['EMA200'], pd.DataFrame):
+        data['EMA200'] = data['EMA200'].iloc[:, 0]
+    
+    if isinstance(data['Close'], pd.DataFrame):
+        data['Close'] = data['Close'].iloc[:, 0]
+    
+    # Calculate Percent_Below_EMA
+    data['Percent_Below_EMA'] = (data['EMA200'] - data['Close']) / data['Close']
+    
+    # Similarly, fix other related calculations
+    if 'EMA200_Weekly' in data.columns and 'Close' in data.columns:
+        data['Percent_Below_EMA_Weekly'] = (data['EMA200_Weekly'] - data['Close']) / data['Close']
+    
 
 
     # Initialize lists and counters for buy and strong buy signals and below EMA tracking
